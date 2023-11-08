@@ -97,9 +97,9 @@ def embeddingMatch():
     # Top 10 quotes with the most similar semantic meaning as the users' feeling
     for idx, embedding in enumerate(message_embeddings_):
         if len(pq) < 10:
-            heapq.heappush(pq, [np.linalg.norm(embedding - data_embedding), motivational_quotes[idx]])
+            heapq.heappush(pq, [-np.linalg.norm(embedding - data_embedding), motivational_quotes[idx]])
         else:
-            heapq.heappushpop(pq, [np.linalg.norm(embedding - data_embedding), motivational_quotes[idx]])
+            heapq.heappushpop(pq, [-np.linalg.norm(embedding - data_embedding), motivational_quotes[idx]])
 
     #randomly pick one
     choice_quote = random.choice(pq)[1]
