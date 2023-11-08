@@ -12,7 +12,7 @@ CORS(app)
 # Load the Universal Sentence Encoder model
 embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
 
-@app.route('/', methods = ["GET"])
+@app.route('/motivationalQuote', methods = ["GET"])
 def embeddingMatch():
     # get user input
 
