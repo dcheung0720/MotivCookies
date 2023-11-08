@@ -1,48 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef, useState} from 'react';
 import { StyleSheet,Button, Text, View, TextInput } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Home from './components/Home';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
 
-  const [feeling, setFeeling] = useState("");
-
-  const submitFeeling = () =>{
-    //send data to backend
-    fetch("http://10.0.0.248:5000".concat(`?data=${feeling}`))
-    .then((res) => res.json())
-    .then((data) => console.log(data));
-  }
-
-  const handleFeelingChange = (text) =>{
-      setFeeling(text);
-  }
-
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <TextInput
-        onChangeText = {handleFeelingChange}
-        value= {feeling}
-        placeholder="useless placeholder"
-      >
+    <NavigationContainer>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
 
-      </TextInput>
-      <Button
-          onPress={submitFeeling}
-        title="Learn More"
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
-      />
-      <StatusBar style="auto" />
-    </View>
+          if (route.name === 'Home') {
+            iconName = focused
+              ? 'ios-home'
+              : 'ios-home-outline';
+          } else if (route.name === 'Profile') {
+            iconName = focused ? 'ios-person' : 'ios-person-outline';
+          }
+
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray',
+      })}>
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Profile" component={Home} />
+    </Tab.Navigator>
+  </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
