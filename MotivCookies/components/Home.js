@@ -1,5 +1,6 @@
 import { StyleSheet,Button, Text, View, TextInput } from 'react-native';
 import Quote from './motivational/Quote';
+import Activities from './motivational/Activities';
 import { VStack, Center, NativeBaseProvider } from 'native-base';
 
 const Home = () =>{
@@ -10,7 +11,9 @@ const Home = () =>{
                     <Center w="80" h="150" bg="indigo.300" rounded="md" shadow={3}>
                         <Quote/>
                     </Center>
-                    <Center w="80" h="150" bg="indigo.500" rounded="md" shadow={3} />
+                    <Center w="80" h="150" bg="indigo.500" rounded="md" shadow={3}>
+                        <Activities/>
+                     </Center>
                     <Center w="80" h="150" bg="indigo.700" rounded="md" shadow={3} />
                 </VStack>
             </View>

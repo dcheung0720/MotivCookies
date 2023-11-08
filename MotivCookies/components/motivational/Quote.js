@@ -17,7 +17,7 @@ const Quote = () =>{
       setLoading(true);
 
       //send data to backend
-      fetch("http://10.0.0.248:5000".concat(`?data=${feeling}`))
+      fetch("http://10.0.0.248:5000/motivationalQuote".concat(`?data=${feeling}`))
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);
@@ -34,6 +34,7 @@ const Quote = () =>{
             {
             loading? 
                 <View style={styles.container}>
+                    <Text style= {{fontSize: 20}}>Quote of the day:</Text>
                     <ActivityIndicator size="small" color="#0000ff" />
                 </View>
                 :
