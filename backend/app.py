@@ -1,17 +1,21 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import tensorflow as tf
 import tensorflow_hub as hub
+import heapq
+import numpy as np
+import random
 
 app = Flask(__name__)
 CORS(app)
 
 @app.route('/', methods = ["GET"])
-def get_articles():
+def embeddingMatch():
+    # get user input
 
+    data = request.args.get('data')
     # Load the Universal Sentence Encoder model
     embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
-    print(embed)
     motivational_quotes = [
     "Success is not the key to happiness. Happiness is the key to success.",
     "Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle.",
@@ -182,10 +186,25 @@ def get_articles():
     "Don't be pushed around by the fears in your mind. Be led by the dreams in your heart.",
     "You are never too old to set another goal or to dream a new dream.",
     "The only place where success comes before work is in the dictionary."]
-
     message_embeddings_ = embed(motivational_quotes)
-    print(len(message_embeddings_))
-    return jsonify({"Hello": "World"})
+
+    data_embedding = embed([data])
+
+    pq = []
+
+    
+    # Top 10 quotes with the most similar semantic meaning as the users' feeling
+    for idx, embedding in enumerate(message_embeddings_):
+        if len(pq) < 10:
+            heapq.heappush(pq, [np.linalg.norm(embedding - data_embedding), motivational_quotes[idx]])
+        else:
+            heapq.heappushpop(pq, [np.linalg.norm(embedding - data_embedding), motivational_quotes[idx]])
+
+    #randomly pick one
+    choice_quote = random.choice(pq)[1]
+        
+
+    return jsonify({"Quote": choice_quote})
 
 
 if __name__ == "__main__":
