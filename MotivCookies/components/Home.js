@@ -2,11 +2,6 @@ import { StyleSheet,Button, Text, View, TextInput } from 'react-native';
 import Quote from './motivational/Quote';
 import Activities from './motivational/Activities';
 import { VStack, Center, NativeBaseProvider } from 'native-base';
-// import at the top
-import "react-native-gesture-handler";
-
-// wrap whole app with <GestureHandlerRootView>
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Home = () =>{
     return(
@@ -17,9 +12,7 @@ const Home = () =>{
                         <Quote/>
                     </Center>
                     <Center w="80" h="150" bg="indigo.500" rounded="md" shadow={3}>
-                        <GestureHandlerRootView>
-                            <Activities/>
-                        </GestureHandlerRootView>
+                            <Activities/>  
                      </Center>
                     <Center w="80" h="150" bg="indigo.700" rounded="md" shadow={3} />
                 </VStack>
