@@ -6,7 +6,6 @@ import DraggableFlatList, {
 import { useState } from 'react';
 // import at the top
 import "react-native-gesture-handler";
-import Speech2Text from './Speech2Text';
 
 // wrap whole app with <GestureHandlerRootView>
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -43,6 +42,10 @@ const Activities = () =>{
     const handleAddGoal = () =>{
         setInputVisibility((prev) => !prev);
     }
+
+    const handDeleteGoal = () =>{
+
+    };
 
     // handleSubmitting
     const handleSubmitGoal = () =>{
@@ -87,6 +90,9 @@ const Activities = () =>{
                     ]}
                 >
                     <Text style={styles.text}>{item.label}</Text>
+                    <View style = {styles.textContainer}>
+                        <Text style={styles.deleteButton}>x</Text>
+                    </View>
                 </TouchableOpacity>
             </ScaleDecorator>
         );
@@ -109,7 +115,6 @@ const Activities = () =>{
                         value = {inputActivity}
                         placeholder='Input Goal or Activity'
                     />
-                    <Speech2Text></Speech2Text>
                     <Button onPress={handleSubmitGoal}>Add Goal</Button>
                 </> 
             }
@@ -134,16 +139,29 @@ const styles = StyleSheet.create({
         margin: 8
       },
     rowItem: {
-        height: 30,
+        height: 40,
         width: 200,
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "space-evenly",
+        flexDirection: "row"
     },
     button:{
         marginRight: 10
     },
     title:{
         fontSize: 30
+    },
+    textContainer:{
+        borderRadius: 10,
+        overflow: "hidden"
+    },
+    deleteButton:{
+        backgroundColor: "red",
+        zIndex: 5,
+        height: 30,
+        width:30,
+        textAlign: "center",
+        lineHeight: 30
     }
 });
 

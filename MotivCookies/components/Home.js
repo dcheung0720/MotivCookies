@@ -11,7 +11,7 @@ const Home = () =>{
                     <Center w="80" h="150" bg="indigo.300" rounded="md" shadow={3}>
                         <Quote/>
                     </Center>
-                    <Center w="80" h="150" bg="indigo.500" rounded="md" shadow={3}>
+                    <Center style = {styles.center} w="80" h="150" bg="indigo.500" rounded="md" shadow={3}>
                             <Activities/>  
                      </Center>
                     <Center w="80" h="150" bg="indigo.700" rounded="md" shadow={3} />
@@ -28,6 +28,9 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
     },
+    center:{
+        overflow: "scroll"
+    }
   });
 
 
