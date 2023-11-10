@@ -6,6 +6,7 @@ import DraggableFlatList, {
 import { useState } from 'react';
 // import at the top
 import "react-native-gesture-handler";
+import Speech2Text from './Speech2Text';
 
 // wrap whole app with <GestureHandlerRootView>
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -108,6 +109,7 @@ const Activities = () =>{
                         value = {inputActivity}
                         placeholder='Input Goal or Activity'
                     />
+                    <Speech2Text></Speech2Text>
                     <Button onPress={handleSubmitGoal}>Add Goal</Button>
                 </> 
             }
