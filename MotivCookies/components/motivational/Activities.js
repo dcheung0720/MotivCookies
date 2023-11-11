@@ -19,21 +19,8 @@ function getColor(i) {
 }
 
 
-
-const initialData = [...Array(NUM_ITEMS)].map((d, index) => {
-    const backgroundColor = getColor(index);
-    return {
-        key: `item-${index}`,
-        label: String(index) + "",
-        height: 100,
-        width: 100 ,
-        backgroundColor,
-    };
-});
-
-
 const Activities = () =>{
-    const [data, setData] = useState(initialData);
+    const [data, setData] = useState([]);
 
     const [inputVisibility, setInputVisibility] = useState(false);
 
@@ -43,8 +30,22 @@ const Activities = () =>{
         setInputVisibility((prev) => !prev);
     }
 
-    const handDeleteGoal = () =>{
+    const handleDeleteGoal = (e, item) =>{
+        //reindex
+        setData((prev) => {
 
+            // filter out item
+            const new_data = prev.filter(x => x.label !== item.label);
+
+            // reindex and update keys
+            const updated_data = new_data.map((newItem, index) => ({
+                ...newItem,
+                index: `${index + 1}.    `,
+                key: `item-${index + 1}`,
+            }));
+
+            return updated_data;
+        });
     };
 
     // handleSubmitting
@@ -57,8 +58,9 @@ const Activities = () =>{
             let index = data.length;
             const backgroundColor = getColor(index);
             const newGoal = {
-                key: `item-${index}`,
-                label: `${index}.    ` + inputActivity,
+                key: `item-${index + 1}`,
+                index: `${index + 1}.    `,
+                label: inputActivity,
                 height: 100,
                 width: 100 ,
                 backgroundColor
@@ -89,9 +91,9 @@ const Activities = () =>{
                         { backgroundColor: isActive ? "red" : item.backgroundColor },
                     ]}
                 >
-                    <Text style={styles.text}>{item.label}</Text>
-                    <View style = {styles.textContainer}>
-                        <Text style={styles.deleteButton}>x</Text>
+                    <Text style={styles.text}>{item.index + item.label}</Text>
+                    <View  style = {styles.textContainer}>
+                        <Text onPress = {(e) => handleDeleteGoal(e, item)} style={styles.deleteButton}>x</Text>
                     </View>
                 </TouchableOpacity>
             </ScaleDecorator>
@@ -107,6 +109,8 @@ const Activities = () =>{
                 </View>
             </View>
             <Text>Tip: Did you know? You are more likely to achieve your goal if you write it out?</Text>
+
+            {/* input text for goal */}
             {inputVisibility 
                 &&
                 <>
@@ -118,6 +122,8 @@ const Activities = () =>{
                     <Button onPress={handleSubmitGoal}>Add Goal</Button>
                 </> 
             }
+
+            {/* list of goals */}
             {!inputVisibility &&
                 <GestureHandlerRootView>
                     <DraggableFlatList
@@ -153,15 +159,15 @@ const styles = StyleSheet.create({
     },
     textContainer:{
         borderRadius: 10,
-        overflow: "hidden"
+        overflow: "hidden",
     },
     deleteButton:{
         backgroundColor: "red",
-        zIndex: 5,
         height: 30,
         width:30,
         textAlign: "center",
-        lineHeight: 30
+        lineHeight: 30,
+        zIndex: 20
     }
 });
 
