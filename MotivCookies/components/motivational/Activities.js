@@ -72,7 +72,7 @@ const Activities = () =>{
             // close the add goal page
             handleAddGoal();
 
-            setData((prev) => [...prev, newGoal ])
+            setData((prev) => [...prev, newGoal])
             }
     }
 
@@ -92,7 +92,7 @@ const Activities = () =>{
                     ]}
                 >
                     <Text style={styles.text}>{item.index + item.label}</Text>
-                    <View  style = {styles.textContainer}>
+                    <View style = {styles.textContainer}>
                         <Text onPress = {(e) => handleDeleteGoal(e, item)} style={styles.deleteButton}>x</Text>
                     </View>
                 </TouchableOpacity>
@@ -108,7 +108,7 @@ const Activities = () =>{
                     <Button style ={{alignSelf: "flex-end"}} onPress= {handleAddGoal}>{inputVisibility === true? "x" : "+"}</Button>
                 </View>
             </View>
-            <Text>Tip: Did you know? You are more likely to achieve your goal if you write it out?</Text>
+            {data.length === 0 && <Text>Tip: Did you know? You are more likely to achieve your goal if you write it out?</Text>}
 
             {/* input text for goal */}
             {inputVisibility 
@@ -118,6 +118,7 @@ const Activities = () =>{
                         onChangeText={handleInputActivity}
                         value = {inputActivity}
                         placeholder='Input Goal or Activity'
+                        style = {{margin: 5}}
                     />
                     <Button onPress={handleSubmitGoal}>Add Goal</Button>
                 </> 
