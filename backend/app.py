@@ -5,12 +5,93 @@ import tensorflow_hub as hub
 import heapq
 import numpy as np
 import random
+import sqlite3
 
 app = Flask(__name__)
 CORS(app)
 
-# Load the Universal Sentence Encoder model
-embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
+# # Load the Universal Sentence Encoder model
+# embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
+
+
+#db connection
+def connect_to_db():
+    conn = sqlite3.connect("database.db")
+    return conn
+
+def create_db_table():
+    try:
+        conn = connect_to_db()
+        conn.execute(''' 
+            CREATE TABLE IF NOT EXISTS users(user_id INTEGER PRIMARY KEY NOT NULL,
+                     name TEXT NOT NULL,
+                     email TEXT NOT NULL,
+                     phone TEXT NOT NULL,
+                    address TEXT NOT NULL,
+                    country TEXT NOT NULL
+            );
+        ''')
+
+        conn.commit()
+        print("user table created successfully")
+    except:
+        print("user table creation failed")
+    finally:
+        conn.close()
+
+def insert_user(user):
+    print(user)
+    inserted_user = {}
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute('''
+            INSERT INTO users (name, email, phone, address, country)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (user['name'], user['email'], user['phone'], user['address'], user['country']))
+    
+
+        conn.commit()
+        inserted_user = get_user_by_id(cur.lastrowid)
+
+    except:
+        conn.rollback()
+    
+    finally:
+        conn.close()
+    
+    return inserted_user
+
+def get_user_by_id(user_id):
+    user = {}
+    try:
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM users WHERE user_id = ?", 
+                       (user_id,))
+        row = cur.fetchone()
+
+        # convert row object to dictionary
+        user["user_id"] = row["user_id"]
+        user["name"] = row["name"]
+        user["email"] = row["email"]
+        user["phone"] = row["phone"]
+        user["address"] = row["address"]
+        user["country"] = row["country"]
+    except:
+        user = {}
+
+    return user
+
+@app.route("/api/users/add", methods = ["POST"])
+def api_add_user():
+    user = request.get_json()
+    return jsonify(insert_user(user))
+
+@app.route("/api/users/<user_id>", methods = ["GET"])
+def api_get_user(user_id):
+    return jsonify(get_user_by_id(user_id))
 
 @app.route('/motivationalQuote', methods = ["GET"])
 def embeddingMatch():
