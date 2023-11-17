@@ -19,7 +19,9 @@ def connect_to_db():
     conn = sqlite3.connect("database.db")
     return conn
 
-def create_db_table():
+
+####################   user table  ############################
+def create_user_table():
     try:
         conn = connect_to_db()
         conn.execute(''' 
@@ -39,8 +41,9 @@ def create_db_table():
     finally:
         conn.close()
 
+create_user_table()
+
 def insert_user(user):
-    print(user)
     inserted_user = {}
     try:
         conn = connect_to_db()
@@ -92,6 +95,83 @@ def api_add_user():
 @app.route("/api/users/<user_id>", methods = ["GET"])
 def api_get_user(user_id):
     return jsonify(get_user_by_id(user_id))
+
+
+#################### Activity Table ###########################
+def create_goals_table():
+    try:
+        conn = connect_to_db()
+        conn.execute('''CREATE TABLE IF NOT EXISTS goals(
+            goal_id INTEGER PRIMARY KEY NOT NULL,
+            goal TEXT NOT NULL,
+            user_id INTEGER NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(user_id)
+        );''')
+
+        conn.commit()
+
+        print("goal table created successfully")
+
+    except:
+        print("ERROR")
+    finally:
+        conn.close()
+
+def get_goals_by_id(user_id):
+    goals = {}
+    try:
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM goals WHERE user_id = ?",
+                    (user_id,))
+        allGoals = cur.fetchall()
+        for idx, g in enumerate(allGoals):
+            goals[str(idx)] = g["goal"]
+        conn.commit()
+
+    except:
+        print("Failed to retrieve goals")
+
+    finally:
+        conn.close()
+
+    return goals
+
+def insert_goal(goal_data):
+    inserted_goal = {}
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+
+        cur.execute('''
+            INSERT INTO goals (goal, user_id)
+            VALUES (?, ?)
+        ''',
+        (goal_data["goal"], goal_data["user_id"]))
+
+        conn.commit()
+        inserted_goal["goal"] = goal_data["goal"]
+        inserted_goal["user_id"] = goal_data["user_id"]
+
+    except:
+        conn.rollback()
+        print("Cannot Insert Goal")
+    finally:
+        conn.close()
+
+    return inserted_goal
+
+create_goals_table()
+
+@app.route("/api/goals/<user_id>", methods = ["GET"])
+def api_gets_goal(user_id):
+    return jsonify(get_goals_by_id(user_id))
+
+@app.route("/api/goals/add", methods = ["POST"])
+def api_add_goal():
+    goal_data = request.get_json()
+    return jsonify(insert_goal(goal_data))
 
 @app.route('/motivationalQuote', methods = ["GET"])
 def embeddingMatch():
