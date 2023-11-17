@@ -87,6 +87,23 @@ const Activities = () =>{
                 backgroundColor
             }
 
+            //upate database
+            fetch("http://10.0.0.248:5000/api/goals/add",{ 
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  // Add any other headers if needed
+                },
+                body: JSON.stringify(
+                        {
+                            "goal": inputActivity,
+                            "user_id": user_id
+                        }
+                    ),
+            })
+            .then(res => res.json())
+            .then(d => console.log(d))
+
             // clear out the input activity
             setInputActivity("");
 
