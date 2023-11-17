@@ -3,7 +3,7 @@ import { AddIcon, Button, Column, NativeBaseProvider } from "native-base";
 import DraggableFlatList, {
     ScaleDecorator,
   } from "react-native-draggable-flatlist";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import at the top
 import "react-native-gesture-handler";
 
@@ -20,11 +20,32 @@ function getColor(i) {
 
 
 const Activities = () =>{
+    let user_id = 1
+
     const [data, setData] = useState([]);
 
     const [inputVisibility, setInputVisibility] = useState(false);
 
     const [inputActivity, setInputActivity] = useState(""); 
+
+    useEffect(()=>{
+        fetch("http://10.0.0.248:5000/api/goals/1")
+        .then((res) => res.json())
+        .then(data => {
+            setData(Object.values(data).map((x, idx) => {
+                const backgroundColor = getColor(idx);
+                const newGoal = {
+                    key: `item-${idx + 1}`,
+                    index: `${idx + 1}.    `,
+                    label: x,
+                    height: 100,
+                    width: 100 ,
+                    backgroundColor
+                }
+                return newGoal
+            }))
+        })
+    }, [])
 
     const handleAddGoal = () =>{
         setInputVisibility((prev) => !prev);
