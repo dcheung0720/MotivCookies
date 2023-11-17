@@ -52,6 +52,25 @@ const Activities = () =>{
     }
 
     const handleDeleteGoal = (e, item) =>{
+        
+        // delete from database
+        fetch("http://10.0.0.248:5000/api/goals/delete",{
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+                // Add any other headers if needed
+              },
+            body:
+                JSON.stringify(
+                    {
+                        "goal": item.label,
+                        "user_id": user_id
+                    }
+                )
+        })
+        .then(res => res.json())
+        .then(data => console.log(data))
+
         //reindex
         setData((prev) => {
 
@@ -109,7 +128,8 @@ const Activities = () =>{
 
             // close the add goal page
             handleAddGoal();
-
+            
+            // change UI
             setData((prev) => [...prev, newGoal])
             }
     }
