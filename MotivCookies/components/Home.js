@@ -16,25 +16,25 @@ const Home = () =>{
 
     return(
         <NativeBaseProvider>
-            <View style={styles.container }>
-                <VStack space={6} alignItems="center" justifyContent= "center">
-                    <TouchableOpacity >
-                        <Center style = {styles.center}  bg="#B7FFF1" rounded="md" shadow={3}>
-                            <Quote/>
-                        </Center>
-                    </TouchableOpacity>
+            <TouchableOpacity activeOpacity={.9} style={styles.container} onPress = {activityModal == true ? handleActivityModal: null}>
+                    <VStack space={6} alignItems="center" justifyContent= "center">
+                        <TouchableOpacity activeOpacity={1} >
+                            <Center style = {styles.center}  bg="#B7FFF1" rounded="md" shadow={3}>
+                                <Quote/>
+                            </Center>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity activeOpacity={activityModal? 1: .7} style = {activityModal? styles.centerFocus: styles.center}  onPress = {activityModal? null: handleActivityModal}>
-                        <Center style = {activityModal? styles.centerFocus: styles.center}  bg="#68BBE3" rounded="md" shadow={3}>
-                                <Activities/>  
-                        </Center>
-                     </TouchableOpacity >
-                     
-                     <TouchableOpacity >
-                            <Center style = {styles.center} bg="#F5F5DC" rounded="md" shadow={3} />
-                    </TouchableOpacity>
-                </VStack>
-            </View>
+                        <TouchableOpacity activeOpacity={activityModal? 1: .7} style = {activityModal? styles.centerFocus: styles.center}  onPress = {activityModal? null: handleActivityModal}>
+                            <Center style = {activityModal? styles.centerFocus: styles.center}  bg="#68BBE3" rounded="md" shadow={3}>
+                                    <Activities/>  
+                            </Center>
+                        </TouchableOpacity >
+                        
+                        <TouchableOpacity activeOpacity={1}>
+                                <Center style = {styles.center} bg="#F5F5DC" rounded="md" shadow={3} />
+                        </TouchableOpacity>
+                    </VStack>
+            </TouchableOpacity>
       </NativeBaseProvider>
 
       )

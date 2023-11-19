@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, ActivityIndicator,  TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, ActivityIndicator,  TouchableOpacity} from 'react-native';
 import { AddIcon, Button, Column, NativeBaseProvider } from "native-base";
 import DraggableFlatList, {
     ScaleDecorator,
@@ -10,7 +10,7 @@ import "react-native-gesture-handler";
 // wrap whole app with <GestureHandlerRootView>
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-const NUM_ITEMS = 0;
+const NUM_ITEMS = 10;
 
 function getColor(i) {
     const multiplier = 255 / (NUM_ITEMS - 1);
@@ -103,7 +103,7 @@ const Activities = () =>{
                 label: inputActivity,
                 height: 100,
                 width: 100 ,
-                backgroundColor
+                backgroundColor: backgroundColor
             }
 
             //upate database
@@ -184,7 +184,7 @@ const Activities = () =>{
 
             {/* list of goals */}
             {!inputVisibility &&
-                <GestureHandlerRootView>
+                <GestureHandlerRootView style = {{height: 100}}>
                     <DraggableFlatList
                         data={data}
                         keyExtractor={(item) => item.key}
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        margin: 8
+        margin: 8,
       },
     rowItem: {
         height: 40,
