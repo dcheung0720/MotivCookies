@@ -19,19 +19,19 @@ const Home = () =>{
             <View style={styles.container }>
                 <VStack space={6} alignItems="center" justifyContent= "center">
                     <TouchableOpacity >
-                        <Center style = {styles.center}  bg="indigo.300" rounded="md" shadow={3}>
+                        <Center style = {styles.center}  bg="#B7FFF1" rounded="md" shadow={3}>
                             <Quote/>
                         </Center>
                     </TouchableOpacity>
 
                     <TouchableOpacity activeOpacity={activityModal? 1: .7} style = {activityModal? styles.centerFocus: styles.center}  onPress = {activityModal? null: handleActivityModal}>
-                        <Center style = {activityModal? styles.centerFocus: styles.center}  bg="indigo.500" rounded="md" shadow={3}>
+                        <Center style = {activityModal? styles.centerFocus: styles.center}  bg="#68BBE3" rounded="md" shadow={3}>
                                 <Activities/>  
                         </Center>
                      </TouchableOpacity >
                      
                      <TouchableOpacity >
-                            <Center style = {styles.center} bg="indigo.700" rounded="md" shadow={3} />
+                            <Center style = {styles.center} bg="#F5F5DC" rounded="md" shadow={3} />
                     </TouchableOpacity>
                 </VStack>
             </View>
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+      backgroundColor: "#ffb7c5"
     },
     center:{
         overflow: "scroll",

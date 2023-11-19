@@ -59,7 +59,7 @@ const Quote = () =>{
                 :
                 <View style={styles.container}>
                     <Text style= {{fontSize: 20}}>Quote of the day:</Text>
-                    <Text style= {{fontSize: 15}}>{motivationalQuote}</Text>
+                    <Text style= {{fontSize: 15, margin: 5}}>{motivationalQuote}</Text>
                     <Button onPress={() => {
                         setEditFeeling((prev) => !prev)}}> 
                         New Feeling 

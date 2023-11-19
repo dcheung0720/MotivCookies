@@ -11,7 +11,7 @@ app = Flask(__name__)
 CORS(app)
 
 # # Load the Universal Sentence Encoder model
-# embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
+embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder")
 
 
 #db connection
@@ -97,7 +97,7 @@ def api_get_user(user_id):
     return jsonify(get_user_by_id(user_id))
 
 
-#################### Activity Table ###########################
+#################### Goals Table ###########################
 def create_goals_table():
     try:
         conn = connect_to_db()
@@ -116,6 +116,7 @@ def create_goals_table():
         print("ERROR")
     finally:
         conn.close()
+create_goals_table()
 
 def get_goals_by_id(user_id):
     goals = {}
@@ -162,7 +163,25 @@ def insert_goal(goal_data):
 
     return inserted_goal
 
-create_goals_table()
+def delete_goal(goal_data):
+    deleted = {}
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute('''
+            DELETE from goals WHERE goal = ? and user_id = ?
+        ''',
+        (goal_data["goal"], goal_data["user_id"]))
+        conn.commit()
+
+        deleted["message"] = "Goal deleted"
+    except:
+        print("Deletion failed")
+        deleted["message"] = "Goal failed to delete"
+    finally:    
+        conn.close()
+
+    return deleted
 
 @app.route("/api/goals/<user_id>", methods = ["GET"])
 def api_gets_goal(user_id):
@@ -172,6 +191,11 @@ def api_gets_goal(user_id):
 def api_add_goal():
     goal_data = request.get_json()
     return jsonify(insert_goal(goal_data))
+
+@app.route("/api/goals/delete", methods = ["DELETE"])
+def api_delete_goal():
+    goal_data = request.get_json()
+    return jsonify(delete_goal(goal_data))
 
 @app.route('/motivationalQuote', methods = ["GET"])
 def embeddingMatch():
