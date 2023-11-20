@@ -34,7 +34,7 @@ const Home = () =>{
                         
                         <TouchableOpacity activeOpacity={1}>
                                 <Center style = {styles.center} bg="#F5F5DC" rounded="md" shadow={3}>
-                                    <SuggestedGoals></SuggestedGoals>
+                                    <SuggestedGoals data = {data} setData={setData}></SuggestedGoals>
                                 </Center>
                         </TouchableOpacity>
                     </VStack>

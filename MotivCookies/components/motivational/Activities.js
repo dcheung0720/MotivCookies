@@ -144,7 +144,7 @@ const Activities = ({data, setData}) =>{
                     disabled={isActive}
                     style={[
                     styles.rowItem,
-                        { backgroundColor: isActive ? "red" : item.backgroundColor },
+                        { backgroundColor: isActive ? "red" : item.backgroundColor, borderRadius: 7 },
                     ]}
                 >
                     <Text style={styles.text}>{item.index + item.label}</Text>

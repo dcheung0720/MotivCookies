@@ -1,17 +1,60 @@
 import { StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import { useEffect, useState } from "react";
 import { Button } from "native-base";
+import { AntDesign } from '@expo/vector-icons';
 
 
 const SuggestedGoals = ({data, setData}) =>{
     
+    let user_id = 1
+
     const [generatedGoals, setGoals] = useState([]);
-    const [refreshing, setRefreshing] = useState(false);
 
     const handleGetGoals = () =>{
         fetch(`http:10.0.0.248:5000/suggestedGoals?data=${data}`)
         .then(res => res.json())
         .then(d => setGoals(Object.values(d)))
+    }
+
+    function getColor(i) {
+        const multiplier = 255 / (10 - 1);
+        const colorVal = i * multiplier;
+        return `rgb(${colorVal}, ${Math.abs(128 - colorVal)}, ${255 - colorVal})`;
+    }
+
+    const handleAddGoal = (g) =>{
+        console.log(g)
+        let index = data.length;
+            const backgroundColor = getColor(index);
+            const newGoal = {
+                key: `item-${index + 1}`,
+                index: `${index + 1}.    `,
+                label: g,
+                height: 100,
+                width: 100 ,
+                backgroundColor: backgroundColor
+            }
+
+            setData
+
+            //upate database
+            fetch("http://10.0.0.248:5000/api/goals/add",{ 
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  // Add any other headers if needed
+                },
+                body: JSON.stringify(
+                        {
+                            "goal": g,
+                            "user_id": user_id
+                        }
+                    ),
+            })
+            .then(res => res.json())
+            .then(d => console.log(d))
+
+            setData((prev) => [...prev, newGoal])
     }
 
 
@@ -25,14 +68,14 @@ const SuggestedGoals = ({data, setData}) =>{
                 <Text style = {styles.title}>Suggested Goals</Text>
 
                 <Button style = {{width: 60}} onPress = {handleGetGoals}> 
-                    {/* <Text><FontAwesomeIcon icon={faRotateRight} /></Text> */}
+                    <AntDesign name="reload1" size={24} color="black" />
                 </Button>
             </View>
 
             <View>
                 {generatedGoals.map((g, idx) => 
-                    <TouchableOpacity>
-                        <Text>{g}</Text>
+                    <TouchableOpacity onPress = {() => handleAddGoal(g)} style = {{height: 30, width: 200}}>
+                        <Text>{idx + 1}. {g}</Text>
                     </TouchableOpacity>)
                 }
             </View>
