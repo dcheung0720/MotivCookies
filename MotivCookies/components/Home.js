@@ -3,6 +3,7 @@ import Quote from './motivational/Quote';
 import Activities from './motivational/Activities';
 import { VStack, Center, NativeBaseProvider } from 'native-base';
 import { useState } from 'react';
+import SuggestedGoals from './motivational/SuggestedGoals';
 
 const Home = () =>{
 
@@ -14,7 +15,6 @@ const Home = () =>{
         setActivityModal((prev) => !prev);
     }
 
-    
 
     return(
         <NativeBaseProvider>
@@ -33,7 +33,9 @@ const Home = () =>{
                         </TouchableOpacity >
                         
                         <TouchableOpacity activeOpacity={1}>
-                                <Center style = {styles.center} bg="#F5F5DC" rounded="md" shadow={3} />
+                                <Center style = {styles.center} bg="#F5F5DC" rounded="md" shadow={3}>
+                                    <SuggestedGoals></SuggestedGoals>
+                                </Center>
                         </TouchableOpacity>
                     </VStack>
             </TouchableOpacity>
