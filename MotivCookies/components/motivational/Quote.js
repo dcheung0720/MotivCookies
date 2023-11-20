@@ -34,13 +34,13 @@ const Quote = () =>{
             {
             loading? 
                 <View style={styles.container}>
-                    <Text style= {{fontSize: 20}}>Quote of the day:</Text>
+                    <Text style= {{fontSize: 30}}>Quote of the day:</Text>
                     <ActivityIndicator size="small" color="#0000ff" />
                 </View>
                 :
                 motivationalQuote === "" || editFeeling === true ?
                     <View style={styles.container}>
-                        <Text>How are you feeling today?</Text>
+                        <Text style= {{fontSize: 22}}>How are you feeling today?</Text>
                         <TextInput
                             onChangeText = {handleFeelingChange}
                             value= {feeling}
@@ -57,9 +57,9 @@ const Quote = () =>{
                         <StatusBar style="auto" />  
                     </View> 
                 :
-                <View style={styles.container}>
-                    <Text style= {{fontSize: 20}}>Quote of the day:</Text>
-                    <Text style= {{fontSize: 15, margin: 2}}>{motivationalQuote}</Text>
+                <View style={[styles.container, {padding: 10}]}>
+                    <Text style= {{fontSize: 30}}>Quote of the day:</Text>
+                    <Text style= {{fontSize: 15, fontStyle: "italic"}}>{motivationalQuote}</Text>
                     <Button onPress={() => {
                         setEditFeeling((prev) => !prev)}}> 
                         New Feeling 

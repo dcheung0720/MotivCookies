@@ -8,6 +8,8 @@ const Home = () =>{
 
     const [activityModal, setActivityModal] = useState(false);
 
+    const [data, setData] = useState([]);
+
     const handleActivityModal = () =>{
         setActivityModal((prev) => !prev);
     }
@@ -26,7 +28,7 @@ const Home = () =>{
 
                         <TouchableOpacity activeOpacity={activityModal? 1: .7} style = {activityModal? styles.centerFocus: styles.center}  onPress = {activityModal? null: handleActivityModal}>
                             <Center style = {activityModal? styles.centerFocus: styles.center}  bg="#68BBE3" rounded="md" shadow={3}>
-                                    <Activities/>  
+                                    <Activities data = {data} setData = {setData}/>  
                             </Center>
                         </TouchableOpacity >
                         
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
     center:{
         overflow: "scroll",
         width : 300,
-        height : 150, 
+        height : 180, 
         zIndex: 10
     },
     centerFocus:{

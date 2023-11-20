@@ -292,6 +292,103 @@ def embeddingMatch():
 
     return jsonify({"Quote": choice_quote})
 
+@app.route("/suggestedGoals", methods = ["GET"])
+def goalMatch():
+
+    goals = [
+    "Read a book each month.",
+    "Learn a new language.",
+    "Take up a musical instrument.",
+    "Develop a daily meditation habit.",
+    "Practice mindfulness.",
+    "Improve time management skills.",
+    "Start a gratitude journal.",
+    "Learn a new skill on YouTube.",
+    "Take a public speaking course.",
+    "Set aside time for self-reflection weekly.",
+    "Exercise for at least 30 minutes daily.",
+    "Try a new type of workout (yoga, HIIT, etc.).",
+    "Drink more water daily.",
+    "Improve your sleep routine.",
+    "Cook a healthy meal from scratch weekly.",
+    "Achieve a fitness milestone (run a 5k, lift a certain weight).",
+    "Take regular breaks to stretch at work.",
+    "Cut down on processed foods.",
+    "Practice portion control.",
+    "Explore a new outdoor activity (hiking, kayaking, etc.).",
+    "Strengthen existing friendships.",
+    "Make an effort to meet new people.",
+    "Host a gathering with friends.",
+    "Reconnect with old friends.",
+    "Attend a social event or meetup.",
+    "Improve communication skills.",
+    "Join a club or group with shared interests.",
+    "Plan a family reunion.",
+    "Volunteer for a community organization.",
+    "Mend a broken relationship.",
+    "Take a professional development course.",
+    "Attend a networking event.",
+    "Set career-related milestones.",
+    "Update your resume.",
+    "Learn a new software or tool.",
+    "Start a side hustle.",
+    "Improve time management at work.",
+    "Set career goals for the next 5 years.",
+    "Explore a new career path.",
+    "Obtain a new certification or qualification.",
+    "Create a monthly budget.",
+    "Save a percentage of your income.",
+    "Pay off a credit card or loan.",
+    "Start an emergency fund.",
+    "Invest in a retirement account.",
+    "Cut unnecessary expenses.",
+    "Set a specific savings goal.",
+    "Track daily expenses for a month.",
+    "Create a passive income stream.",
+    "Consult a financial advisor.",
+    "Start a blog or vlog.",
+    "Learn photography.",
+    "Write a short story or poem.",
+    "Take up painting or drawing.",
+    "Start a DIY project.",
+    "Learn a new craft (knitting, woodworking, etc.).",
+    "Explore a new genre of music.",
+    "Create a personal website/portfolio.",
+    "Experiment with cooking new recipes.",
+    "Try your hand at gardening.",
+    "Plan a trip."
+]
+    
+    ##users' input feeling
+    feeling = request.args.get("data")
+
+    print(feeling)
+
+    suggested_goals = {}
+
+    ## if feeling is not inputed
+    if feeling == "":
+        for i in range(3):
+            goal  = random.choice(goals)
+            suggested_goals[i] = goal
+    else:
+        feeling_embedding =  embed([feeling])
+
+        goal_embeddings = embed(goals)
+        
+        pq = []
+
+        for idx, goal_embed in  enumerate(goal_embeddings): 
+            if len(pq) < 3:
+                heapq.heappush(pq, [-np.linalg.norm(goal_embed - feeling_embedding), goals[idx]])
+            else:
+                heapq.heappushpop(pq, [-np.linalg.norm(goal_embed - feeling_embedding), goals[idx]])
+
+        for i in range(len(pq)):
+            suggested_goals[i] = pq[i][1]
+
+    print(suggested_goals)
+    return jsonify(suggested_goals)
 
 if __name__ == "__main__":
     app.run(debug = True, host =  "10.0.0.248")

@@ -19,10 +19,8 @@ function getColor(i) {
 }
 
 
-const Activities = () =>{
+const Activities = ({data, setData}) =>{
     let user_id = 1
-
-    const [data, setData] = useState([]);
 
     const [inputVisibility, setInputVisibility] = useState(false);
 
@@ -184,7 +182,7 @@ const Activities = () =>{
 
             {/* list of goals */}
             {!inputVisibility &&
-                <GestureHandlerRootView style = {{height: 100}}>
+                <GestureHandlerRootView style = {{flex: 1}}>
                     <DraggableFlatList
                         data={data}
                         keyExtractor={(item) => item.key}
